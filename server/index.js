@@ -4,15 +4,14 @@ import http from "http";
 import path from "path";
 import cors from "cors";
 import "dotenv/config";
+import Islands from "./Models/Islands.js";
 
 const __dirname = path.resolve();
 
 export const app = express();
 
 app.options("*", cors());
-
 app.set("trust proxy", true);
-
 app.use("/public", express.static(path.join(__dirname, "/public")));
 
 // Serve the Parse API on the /parse URL prefix
@@ -29,6 +28,21 @@ if (!process.env.TESTING) {
   await server.start();
   app.use(mountPath, server.app);
 }
+
+Islands.createSchema()
+  .then(() => console.log("Island schema created successfully!"))
+  .catch((error) => console.log("Error creating schema for Island:", error));
+
+app.get("/api/islands", async (req, res) => {
+  try {
+    const islands = await Islands.fetch();
+
+    res.status(200).json(islands);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Failed to fetch islands");
+  }
+});
 
 app.get("/", function (req, res) {
   res
