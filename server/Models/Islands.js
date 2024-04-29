@@ -15,10 +15,14 @@ class Island {
   //   await schema.save();
   // };
 
-  static fetch = async () => {
+  static find = async () => {
     const results = await new Parse.Query("Islands").find();
 
     return results.map((island) => island.toJSON());
+  };
+
+  static get = async (id) => {
+    return await new Parse.Query("Islands").get(id);
   };
 }
 

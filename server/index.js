@@ -12,6 +12,7 @@ export const app = express();
 
 app.options("*", cors());
 app.set("trust proxy", true);
+
 app.use("/public", express.static(path.join(__dirname, "/public")));
 
 // Serve the Parse API on the /parse URL prefix
@@ -29,34 +30,31 @@ if (!process.env.TESTING) {
   app.use(mountPath, server.app);
 }
 
-Islands.createSchema()
-  .then(() => console.log("Island schema created successfully!"))
-  .catch((error) => console.log("Error creating schema for Island:", error));
-
 app.get("/api/islands", async (req, res) => {
   try {
-    const islands = await Islands.fetch();
+    const islands = await Islands.find();
 
     res.status(200).json(islands);
   } catch (error) {
-    console.log(error);
     res.status(500).send("Failed to fetch islands");
   }
 });
 
-app.get("/", function (req, res) {
-  res
-    .status(200)
-    .send(
-      "I dream of being a website.  Please star the parse-server repo on GitHub!"
-    );
-});
+app.get("/api/islands/:id", async (req, res) => {
+  try {
+    const islandId = req.params.id;
 
-// There will be a test page available on the /test path of your server url
-// Remove this before launching your app
-// app.get("/test", function (req, res) {
-//   res.sendFile(path.join(__dirname, "/public/test.html"));
-// });
+    const island = await Islands.get(islandId);
+
+    return res.status(200).json(island);
+  } catch (error) {
+    if (error?.code === 101) {
+      return res.status(404).send("Island not found");
+    }
+
+    return res.status(500).send("Failed to fetch island");
+  }
+});
 
 if (!process.env.TESTING) {
   const port = process.env.SERVER_PORT || 1337;
