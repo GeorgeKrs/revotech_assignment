@@ -10,7 +10,22 @@ const __dirname = path.resolve();
 
 export const app = express();
 
-app.options("*", cors());
+const corsOptions = {
+  origin: "http://localhost",
+  methods: ["GET", "POST", "PUT"],
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "X-Requested-With",
+    "Accept",
+  ],
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
+
+app.options("*", cors(corsOptions));
+app.use(cors(corsOptions));
+
 app.set("trust proxy", true);
 
 app.use("/public", express.static(path.join(__dirname, "/public")));
