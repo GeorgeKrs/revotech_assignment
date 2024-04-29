@@ -1,8 +1,7 @@
 <app-header />
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 p-4 gap-4">
-  <app-island-card [title]="'The Space Marine 1'" />
-  <app-island-card [title]="'The Space Marine 2'" />
+  <app-island-card *ngFor="let island of islands" [title]="island.title" />
 </div>
 
 <router-outlet />
