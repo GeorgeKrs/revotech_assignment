@@ -1,0 +1,38 @@
+<div class="bg-white py-28">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div
+      class="mx-auto flex max-w-2xl flex-col items-end justify-between gap-16 lg:mx-0 lg:max-w-none lg:flex-row"
+    >
+      <div class="w-full lg:max-w-lg lg:flex-auto">
+        <h2 class="text-3xl font-bold text-slate-700 sm:text-4xl text-center">
+          {{ island.title }}
+        </h2>
+        <p class="mt-6 text-lg text-slate-700">
+          {{ island.short_info }}
+        </p>
+        <img
+          src="{{ island.photo }}"
+          alt=""
+          class="mt-10 w-full rounded-2xl bg-slate-50 object-cover lg:aspect-auto lg:h-[34.5rem]"
+        />
+      </div>
+      <div class="w-full lg:max-w-xl lg:flex-auto text-slate-700">
+        <div class="font-bold mb-2 italic text-lg">
+          More about the island...
+        </div>
+        <div>{{ island.description }}</div>
+      </div>
+    </div>
+
+    <div class="flex justify-end mt-4 px-6">
+      <a href="{{ island.url }}" target="_blank">
+        <button
+          type="button"
+          class="inline-flex items-center gap-x-1 rounded-md bg-slate-200 px-2.5 py-1.5 text-sm font-semibold text-teal-900 shadow-sm hover:bg-slate-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600"
+        >
+          Visit page
+        </button>
+      </a>
+    </div>
+  </div>
+</div>
