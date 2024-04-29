@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Island } from '../../interfaces/island';
 
 @Component({
   selector: 'app-island-card',
@@ -8,5 +9,5 @@ import { Component, Input } from '@angular/core';
   styleUrl: './island-card.component.css',
 })
 export class IslandCardComponent {
-  @Input() title!: string;
+  @Input() island!: Island;
 }

@@ -4,6 +4,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { IslandCardComponent } from './components/island-card/island-card.component';
 import { CommonModule } from '@angular/common';
 import { IslandsService } from './services/islands.service';
+import { Island } from './interfaces/island';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ import { IslandsService } from './services/islands.service';
 })
 export class AppComponent implements OnInit {
   title = 'frontend';
-  islands: any[] = [];
+  islands: Island[] = [];
 
   constructor(private islandsService: IslandsService) {}
 

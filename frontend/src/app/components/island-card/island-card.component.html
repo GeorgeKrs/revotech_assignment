@@ -1,11 +1,15 @@
-<div
-  class="max-w-sm rounded overflow-hidden shadow-lg border border-teal-700 bg-slate-200 cursor-pointer p-2 mx-auto"
->
-  <div class="font-bold text-xl text-center mb-2 italic">{{ title }}</div>
-
+<div class="flex flex-col h-full border rounded border-teal-900">
   <img
-    class="w-full"
-    src="https://as1.ftcdn.net/v2/jpg/05/58/61/32/1000_F_558613274_Z1zbjnHZKjpnTvvsjfZzYXk2TIeUl54a.jpg"
-    alt="Sunset in the mountains"
+    class="flex-shrink-0 w-full h-40"
+    src="{{ island.photo_thumb }}"
+    alt="Island image"
   />
+  <div class="flex-grow px-4 py-2">
+    <div class="font-bold text-xl mb-2 text-center italic text-teal-900">
+      {{ island.title }}
+    </div>
+    <p class="text-slate-700 text-base">
+      {{ island.short_info }}
+    </p>
+  </div>
 </div>
