@@ -23,7 +23,7 @@ import { IslandShowComponent } from './components/island-show/island-show.compon
 export class AppComponent implements OnInit {
   title = 'frontend';
   islands: Island[] = [];
-  singleIsland: Island | null = null;
+  loading: boolean = true;
 
   constructor(private islandsService: IslandsService) {}
 
@@ -31,8 +31,11 @@ export class AppComponent implements OnInit {
     this.islandsService.find().subscribe({
       next: (response: any) => {
         this.islands = response;
+        this.loading = false;
       },
-      error: (err: any) => console.error('Error fetching islands:', err),
+      error: (err) => {
+        throw new Error('Failed to fetch islands: ', err);
+      },
     });
   }
 }

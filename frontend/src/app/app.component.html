@@ -1,11 +1,13 @@
 <app-header />
 
-<app-island-show [island]="islands[4]"></app-island-show>
-
 <div
   class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 p-2 gap-2"
 >
-  <app-island-card *ngFor="let island of islands" [island]="island" />
+  <app-island-card
+    *ngFor="let island of islands"
+    [loading]="loading"
+    [island]="island"
+  />
 </div>
 
 <router-outlet />
