@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { Island } from '../../interfaces/island';
 import { IslandsService } from '../../services/islands.service';
 
@@ -17,6 +18,7 @@ export class IslandShowComponent implements OnInit {
   loading: boolean = true;
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private islandsService: IslandsService
   ) {}
@@ -33,5 +35,9 @@ export class IslandShowComponent implements OnInit {
         throw new Error('Failed to fetch island details:', err);
       },
     });
+  }
+
+  goToIndex(): void {
+    this.router.navigate(['/']);
   }
 }

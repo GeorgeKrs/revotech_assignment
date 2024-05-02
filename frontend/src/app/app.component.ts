@@ -1,41 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
-import { IslandCardComponent } from './components/island-card/island-card.component';
 import { CommonModule } from '@angular/common';
-import { IslandsService } from './services/islands.service';
-import { Island } from './interfaces/island';
-import { IslandShowComponent } from './components/island-show/island-show.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    HeaderComponent,
-    IslandCardComponent,
-    IslandShowComponent,
-  ],
+  imports: [CommonModule, RouterOutlet, HeaderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'frontend';
-  islands: Island[] = [];
-  loading: boolean = true;
-
-  constructor(private islandsService: IslandsService) {}
-
-  ngOnInit() {
-    this.islandsService.find().subscribe({
-      next: (response: any) => {
-        this.islands = response;
-        this.loading = false;
-      },
-      error: (err) => {
-        throw new Error('Failed to fetch islands: ', err);
-      },
-    });
-  }
 }
