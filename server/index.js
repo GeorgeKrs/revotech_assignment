@@ -1,4 +1,5 @@
 import { ParseServer } from "parse-server";
+import logger from "parse-server/lib/logger.js";
 import express from "express";
 import http from "http";
 import path from "path";
@@ -41,10 +42,11 @@ if (!process.env.TESTING) {
 
 app.get("/api/islands", async (req, res) => {
   try {
-    const islands = await Islands.find();
+    const islands = await Islands.find(req.query);
 
     res.status(200).json(islands);
   } catch (error) {
+    console.log(error);
     res.status(500).send("Failed to fetch islands");
   }
 });
@@ -61,6 +63,7 @@ app.get("/api/islands/:id", async (req, res) => {
       return res.status(404).send("Island not found");
     }
 
+    console.log(error);
     return res.status(500).send("Failed to fetch island");
   }
 });
