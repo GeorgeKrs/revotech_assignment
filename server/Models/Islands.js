@@ -2,7 +2,7 @@ class Island {
   static find = async (requestParameters) => {
     let query = new Parse.Query("Islands");
 
-    if (requestParameters.term) {
+    if (requestParameters.term && requestParameters.term.trim().length > 0) {
       const termToSearch = requestParameters.term.trim();
 
       query
