@@ -4,8 +4,16 @@
     <div class="flex gap-x-4 items-center">
       <div class="flex flex-shrink-0 items-center">
         <img
-          class="h-8 w-auto"
+          (click)="goToIndex()"
+          class="cursor-pointer hidden md:block h-8 w-auto"
           src="https://revotech.com/assets/images/white_logo.png"
+          alt="Revotech"
+        />
+
+        <img
+          (click)="goToIndex()"
+          class="cursor-pointer block md:hidden h-8"
+          src="../../../assets/app_logo.png"
           alt="Revotech"
         />
       </div>
@@ -31,19 +39,49 @@
           <input
             id="search"
             name="search"
+            (input)="handleSearchInput($event)"
             class="block w-full focus:cursor-text rounded-md border-0 focus:outline-none bg-slate-100 hover:bg-slate-200 cursor-pointer py-1 pl-10 pr-3 text-slate-800 placeholder:text-slate-400"
             placeholder="Search..."
             type="search"
           />
         </div>
+        <div
+          *ngIf="searchResults"
+          class="absolute z-10 w-60 md:w-96 bg-slate-100 rounded shadow-md mt-2 max-h-60 overflow-y-auto"
+        >
+          <ul *ngIf="searchResults.length > 0; else noResultsFound">
+            <li
+              *ngFor="let island of searchResults"
+              class="p-2 hover:bg-teal-100 cursor-pointer"
+              (click)="goToIsland(island.objectId)"
+            >
+              <div class="flex items-center gap-x-4">
+                <div>
+                  <img
+                    class="flex-shrink-0 w-14 h-14 rounded"
+                    src="{{ island.photo_thumb }}"
+                    alt="Island image"
+                  />
+                </div>
+                <div class="text-teal-700 text-center">
+                  {{ island.title }}
+                </div>
+              </div>
+            </li>
+          </ul>
+          <ng-template #noResultsFound>
+            <div class="p-4 italic">No results found...</div>
+          </ng-template>
+        </div>
       </div>
     </div>
+
     <div>
       <button
         type="button"
         class="inline-flex items-center gap-x-1.5 rounded-md bg-slate-100 px-2.5 py-1.5 text-sm font-semibold text-teal-900 shadow-sm hover:bg-slate-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600"
       >
-        Login
+        <span class="hidden md:block">Login</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
