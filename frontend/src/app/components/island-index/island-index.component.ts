@@ -3,6 +3,7 @@ import { IslandsService } from '../../services/islands.service';
 import { Island } from '../../interfaces/island';
 import { CommonModule } from '@angular/common';
 import { IslandCardComponent } from '../island-card/island-card.component';
+import { ApiResponse } from '../../interfaces/apiResponse';
 
 @Component({
   selector: 'app-island-index',
@@ -20,8 +21,11 @@ export class IslandIndexComponent implements OnInit {
 
   ngOnInit() {
     this.islandsService.find().subscribe({
-      next: (response: any) => {
-        this.islands = response;
+      next: (response: ApiResponse) => {
+        if (response.status === 200) {
+          this.islands = response.data;
+        }
+
         this.loading = false;
       },
       error: (err) => {

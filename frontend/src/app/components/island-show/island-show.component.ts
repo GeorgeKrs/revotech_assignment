@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Island } from '../../interfaces/island';
 import { IslandsService } from '../../services/islands.service';
 import { GoogleService } from '../../services/google.service';
+import { ApiResponse } from '../../interfaces/apiResponse';
 
 @Component({
   selector: 'app-island-show',
@@ -29,8 +30,15 @@ export class IslandShowComponent implements OnInit {
     this.islandId = this.route.snapshot.paramMap.get('id') ?? '';
 
     this.islandsService.get(this.islandId).subscribe({
-      next: (data) => {
-        this.island = data;
+      next: (response: ApiResponse) => {
+        if (response.status === 200) {
+          this.island = response.data;
+        }
+
+        if (response.status === 404) {
+          this.router.navigate(['/not-found']);
+        }
+
         this.loading = false;
       },
       error: (err) => {
