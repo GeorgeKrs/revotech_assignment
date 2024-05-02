@@ -48,6 +48,7 @@ export class HeaderComponent {
 
   goToIsland(id: string): void {
     this.searchResults = null;
+
     this.router.navigate(['/islands', id]);
   }
 }

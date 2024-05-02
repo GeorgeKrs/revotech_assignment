@@ -6,6 +6,7 @@ import { Island } from '../../interfaces/island';
 import { IslandsService } from '../../services/islands.service';
 import { GoogleService } from '../../services/google.service';
 import { ApiResponse } from '../../interfaces/apiResponse';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-island-show',
@@ -15,7 +16,6 @@ import { ApiResponse } from '../../interfaces/apiResponse';
   styleUrl: './island-show.component.css',
 })
 export class IslandShowComponent implements OnInit {
-  islandId: string = '';
   island!: Island;
   loading: boolean = true;
 
@@ -27,24 +27,29 @@ export class IslandShowComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.islandId = this.route.snapshot.paramMap.get('id') ?? '';
+    this.route.paramMap
+      .pipe(
+        switchMap(() =>
+          this.islandsService.get(this.route.snapshot.paramMap.get('id') ?? '')
+        )
+      )
+      .subscribe({
+        next: (response: ApiResponse) => {
+          if (response.status === 200 && response.data) {
+            this.island = response.data;
+            this.loading = false;
+            return;
+          }
 
-    this.islandsService.get(this.islandId).subscribe({
-      next: (response: ApiResponse) => {
-        if (response.status === 200) {
-          this.island = response.data;
-        }
-
-        if (response.status === 404) {
-          this.router.navigate(['/not-found']);
-        }
-
-        this.loading = false;
-      },
-      error: (err) => {
-        throw new Error('Failed to fetch island details:', err);
-      },
-    });
+          if (response.status === 404) {
+            this.router.navigate(['/not-found']);
+          }
+        },
+        error: (error) => {
+          this.loading = false;
+          console.log('Error fetching island', error);
+        },
+      });
   }
 
   goToIndex(): void {
