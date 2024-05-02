@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { Island } from '../../interfaces/island';
 import { IslandsService } from '../../services/islands.service';
+import { GoogleService } from '../../services/google.service';
 
 @Component({
   selector: 'app-island-show',
@@ -20,7 +21,8 @@ export class IslandShowComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private islandsService: IslandsService
+    private islandsService: IslandsService,
+    private googleService: GoogleService
   ) {}
 
   ngOnInit(): void {
@@ -39,5 +41,12 @@ export class IslandShowComponent implements OnInit {
 
   goToIndex(): void {
     this.router.navigate(['/']);
+  }
+
+  openGoogleMaps(): void {
+    this.googleService.openInGoogleMaps(
+      this.island.location[0],
+      this.island.location[1]
+    );
   }
 }

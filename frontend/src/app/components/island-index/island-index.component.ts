@@ -14,6 +14,7 @@ import { IslandCardComponent } from '../island-card/island-card.component';
 export class IslandIndexComponent implements OnInit {
   islands: Island[] = [];
   loading: boolean = true;
+  numberOfSkeletonCards: number[] = Array.from({ length: 12 }, (_, i) => i + 1);
 
   constructor(private islandsService: IslandsService) {}
 

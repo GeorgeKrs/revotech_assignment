@@ -12,7 +12,6 @@ import { CommonModule } from '@angular/common';
 })
 export class IslandCardComponent {
   @Input() island!: Island;
-  @Input() loading: boolean = true;
 
   constructor(private router: Router) {}
 
