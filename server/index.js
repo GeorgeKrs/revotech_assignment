@@ -1,5 +1,4 @@
 import { ParseServer } from "parse-server";
-import logger from "parse-server/lib/logger.js";
 import express from "express";
 import http from "http";
 import path from "path";
@@ -9,36 +8,36 @@ import Islands from "./Models/Islands.js";
 
 const __dirname = path.resolve();
 
+export const config = {
+  databaseURI: process.env.DB_URI,
+  appId: process.env.APP_ID,
+  masterKey: process.env.MASTER_KEY,
+  serverURL: process.env.SERVER_URL,
+};
+
 export const app = express();
-
-app.use(
-  cors({
-    origin: true,
-    // credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["X-Requested-With", "Content-Type", "Authorization"],
-  })
-);
-
-app.options("*", cors());
-app.set("trust proxy", true);
 
 app.use("/public", express.static(path.join(__dirname, "/public")));
 
 // Serve the Parse API on the /parse URL prefix
 if (!process.env.TESTING) {
   const mountPath = process.env.PARSE_MOUNT || "/parse";
-
-  const server = new ParseServer({
-    databaseURI: process.env.DB_URI,
-    appId: process.env.APP_ID,
-    masterKey: process.env.MASTER_KEY,
-    serverURL: process.env.SERVER_URL,
-  });
-
+  const server = new ParseServer(config);
   await server.start();
   app.use(mountPath, server.app);
 }
+
+app.set("trust proxy", true);
+
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["X-Requested-With", "Content-Type", "Authorization"],
+  })
+);
+app.options("*", cors());
 
 app.get("/api/islands", async (req, res) => {
   try {
