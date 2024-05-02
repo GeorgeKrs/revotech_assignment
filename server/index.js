@@ -43,7 +43,7 @@ app.get("/api/islands", async (req, res) => {
   try {
     const islands = await Islands.find(req.query);
 
-    res.json({
+    return res.status(200).json({
       status: 200,
       data: islands,
       message: null,
@@ -51,7 +51,7 @@ app.get("/api/islands", async (req, res) => {
   } catch (error) {
     console.log(error);
 
-    res.json({
+    return res.status(500).json({
       status: 500,
       data: [],
       message: "Failed to fetch islands",
@@ -65,7 +65,7 @@ app.get("/api/islands/:id", async (req, res) => {
 
     const island = await Islands.get(islandId);
 
-    return res.json({
+    return res.status(200).json({
       status: 200,
       data: island,
       message: null,
@@ -74,13 +74,13 @@ app.get("/api/islands/:id", async (req, res) => {
     if (error?.code === 101) {
       return res.json({
         status: 404,
-        data: [],
+        data: null,
         message: "Island not found",
       });
     }
 
     console.log(error);
-    res.json({
+    return res.status(500).json({
       status: 500,
       data: [],
       message: "Failed to fetch island",
