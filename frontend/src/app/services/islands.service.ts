@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class IslandsService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   find(term: string | null = null): Observable<any> {
     if (term && term.trim().length > 0) {
@@ -35,5 +36,17 @@ export class IslandsService {
       `http://localhost:5000/api/islands/${id}/update`,
       payload
     );
+  }
+
+  redirectToIndex(): void {
+    this.router.navigate(['/']);
+  }
+
+  redirectToShow(id: string): void {
+    this.router.navigate(['/islands/:id']);
+  }
+
+  redirectToEdit(id: string): void {
+    this.router.navigate(['/islands/:id/edit']);
   }
 }

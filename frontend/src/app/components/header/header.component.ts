@@ -42,13 +42,13 @@ export class HeaderComponent {
       });
   }
 
-  goToIndex(): void {
-    this.router.navigate(['/']);
+  redirectToIndex(): void {
+    this.islandsService.redirectToIndex();
   }
 
-  goToIsland(id: string): void {
+  redirectToShow(id: string): void {
     this.searchResults = null;
 
-    this.router.navigate(['/islands', id]);
+    this.islandsService.redirectToShow(id);
   }
 }

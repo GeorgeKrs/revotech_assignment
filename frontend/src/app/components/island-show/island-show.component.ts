@@ -52,8 +52,8 @@ export class IslandShowComponent implements OnInit {
       });
   }
 
-  goToIndex(): void {
-    this.router.navigate(['/']);
+  redirectToIndex(): void {
+    this.islandsService.redirectToIndex();
   }
 
   openGoogleMaps(): void {

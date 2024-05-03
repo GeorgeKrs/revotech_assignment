@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Island } from '../../interfaces/island';
-import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { IslandsService } from '../../services/islands.service';
 
 @Component({
   selector: 'app-island-card',
@@ -13,9 +13,9 @@ import { CommonModule } from '@angular/common';
 export class IslandCardComponent {
   @Input() island!: Island;
 
-  constructor(private router: Router) {}
+  constructor(private islandsService: IslandsService) {}
 
-  goToIsland(id: string): void {
-    this.router.navigate(['/islands', id]);
+  redirectToShow(): void {
+    this.islandsService.redirectToShow(this.island.objectId);
   }
 }

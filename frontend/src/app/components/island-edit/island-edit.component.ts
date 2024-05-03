@@ -87,7 +87,11 @@ export class IslandEditComponent implements OnInit {
     }
   }
 
-  goToIndex(): void {
-    this.router.navigate(['/']);
+  redirectToIndex(): void {
+    this.islandsService.redirectToIndex();
+  }
+
+  redirectToShow(): void {
+    this.islandsService.redirectToShow(this.island.objectId);
   }
 }

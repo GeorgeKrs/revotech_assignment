@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { IslandsService } from '../../services/islands.service';
 
 @Component({
   selector: 'app-not-found',
@@ -9,9 +9,9 @@ import { Router } from '@angular/router';
   styleUrl: './not-found.component.css',
 })
 export class NotFoundComponent {
-  constructor(private router: Router) {}
+  constructor(private islandsService: IslandsService) {}
 
-  goToIndex(): void {
-    this.router.navigate(['/']);
+  redirectToIndex(): void {
+    this.islandsService.redirectToIndex();
   }
 }

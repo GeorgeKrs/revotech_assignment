@@ -4,14 +4,14 @@
     <div class="flex gap-x-4 items-center">
       <div class="flex flex-shrink-0 items-center">
         <img
-          (click)="goToIndex()"
+          (click)="redirectToIndex()"
           class="cursor-pointer hidden md:block h-8 w-auto"
           src="https://revotech.com/assets/images/white_logo.png"
           alt="Revotech"
         />
 
         <img
-          (click)="goToIndex()"
+          (click)="redirectToIndex()"
           class="cursor-pointer block md:hidden h-8"
           src="../../../assets/app_logo.png"
           alt="Revotech"
@@ -53,7 +53,7 @@
             <li
               *ngFor="let island of searchResults"
               class="p-2 hover:bg-teal-100 cursor-pointer"
-              (click)="goToIsland(island.objectId)"
+              (click)="redirectToShow(island.objectId)"
             >
               <div class="flex items-center gap-x-4">
                 <div>
