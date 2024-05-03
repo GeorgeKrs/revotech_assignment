@@ -3,8 +3,16 @@ import ApiResponseDto from "../ApiHelpers/ApiResponseDto.js";
 class AuthController {
   static login = async (req, res) => {
     try {
-      //TODO: Login logic
-      return res.status(200).json(ApiResponseDto.success());
+      const user = await Parse.User.logIn(req.body.username, req.body.password);
+
+      return res.status(200).json(
+        ApiResponseDto.success({
+          data: {
+            username: user.getUsername(),
+            token: user.getSessionToken(),
+          },
+        })
+      );
     } catch (error) {
       console.log(error);
 
@@ -16,9 +24,11 @@ class AuthController {
 
   static logout = async (req, res) => {
     try {
-      //TODO: Logout logic
+      await Parse.User.logOut();
 
-      return res.status(200).json(ApiResponseDto.success());
+      return res
+        .status(200)
+        .json(ApiResponseDto.success({ message: "Logout successfully!" }));
     } catch (error) {
       console.log(error);
 
