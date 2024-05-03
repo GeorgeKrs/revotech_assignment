@@ -19,15 +19,19 @@ class Island {
   };
 
   static update = async (id, payload) => {
-    const island = await self.get(id);
+    const island = await this.get(id);
 
-    if (title?.trim()) island.set("title", payload.title);
-    if (short_info?.trim()) island.set("short_info", payload.short_info);
-    if (description?.trim()) island.set("description", payload.description);
+    if (payload.title?.trim()) {
+      island.set("title", payload.title.trim());
+    }
 
-    island.set("title", title);
-    island.set("short_info", short_info);
-    island.set("description", description);
+    if (payload.short_info?.trim()) {
+      island.set("short_info", payload.short_info.trim());
+    }
+
+    if (payload.description?.trim()) {
+      island.set("description", payload.description.trim());
+    }
 
     await island.save();
 

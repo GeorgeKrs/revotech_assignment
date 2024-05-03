@@ -40,6 +40,8 @@ app.use(
 );
 app.options("*", cors());
 
+app.use(express.json());
+
 app.use("/api", AuthRoute);
 app.use("/api", IslandRoute);
 
