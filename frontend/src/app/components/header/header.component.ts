@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { IslandsService } from '../../services/islands.service';
 import { Island } from '../../interfaces/island';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { ApiResponse } from '../../interfaces/apiResponse';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +18,10 @@ export class HeaderComponent {
   searchResults: Island[] | null = null;
   searchInput = new Subject<string>();
 
-  constructor(private router: Router, private islandsService: IslandsService) {
+  constructor(
+    private authService: AuthService,
+    private islandsService: IslandsService
+  ) {
     this.setupSearch();
   }
 
@@ -28,6 +31,37 @@ export class HeaderComponent {
     if (target && target.value) {
       this.searchInput.next(target.value);
     }
+  }
+
+  handleLogin(): void {
+    this.authService.login('admin', 'admin').subscribe({
+      next: (response: ApiResponse) => {
+        if (response.status === 200) {
+          this.authService.setAuthData(response.data);
+        }
+      },
+      error: (error) => {
+        throw new Error('Error logging in', error);
+      },
+    });
+  }
+
+  handleLogout(): void {
+    this.authService.logout().subscribe({
+      next: (response: ApiResponse) => {
+        if (response.status === 200) {
+          this.authService.clearAuthData();
+        }
+      },
+
+      error: (error) => {
+        throw new Error('Error logging out', error);
+      },
+    });
+  }
+
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
   }
 
   setupSearch(): void {

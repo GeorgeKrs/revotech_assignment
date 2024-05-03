@@ -1,6 +1,6 @@
-const appConfig = {
+const serverConfig = {
   serverUrl: 'http://localhost:5000',
   apiPrefix: '/api',
 };
 
-export default appConfig;
+export default serverConfig;
