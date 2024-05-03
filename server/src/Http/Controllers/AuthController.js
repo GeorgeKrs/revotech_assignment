@@ -9,7 +9,7 @@ class AuthController {
         ApiResponseDto.success({
           data: {
             username: user.getUsername(),
-            token: user.getSessionToken(),
+            sessionToken: user.getSessionToken(),
           },
         })
       );
