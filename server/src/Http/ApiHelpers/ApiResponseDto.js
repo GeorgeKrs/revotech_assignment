@@ -7,11 +7,11 @@ class ApiResponseDto {
     };
   };
 
-  static unauthorized = (
+  static unauthorized = ({
     status = 401,
     data = null,
-    message = "Unauthorized."
-  ) => {
+    message = "Unauthorized.",
+  }) => {
     return {
       status,
       data,

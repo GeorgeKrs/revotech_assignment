@@ -14,6 +14,14 @@ class AuthController {
         })
       );
     } catch (error) {
+      if (error?.code === 101) {
+        return res.status(401).json(
+          ApiResponseDto.unauthorized({
+            message: "Invalid username/password.",
+          })
+        );
+      }
+
       console.log(error);
 
       return res
