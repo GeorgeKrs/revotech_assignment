@@ -4,7 +4,8 @@ import http from "http";
 import path from "path";
 import cors from "cors";
 import "dotenv/config";
-import Islands from "./Models/Islands.js";
+import IslandRoute from "./src/Http/Routes/IslandRoute.js";
+import AuthRoute from "./src/Http/Routes/AuthRoute.js";
 
 const __dirname = path.resolve();
 
@@ -16,77 +17,31 @@ export const config = {
 };
 
 export const app = express();
+app.set("trust proxy", true);
 
 app.use("/public", express.static(path.join(__dirname, "/public")));
 
 // Serve the Parse API on the /parse URL prefix
 if (!process.env.TESTING) {
-  const mountPath = process.env.PARSE_MOUNT || "/parse";
+  const mountPath = process.env.PAIslandsRSE_MOUNT || "/parse";
   const server = new ParseServer(config);
   await server.start();
   app.use(mountPath, server.app);
 }
-
-app.set("trust proxy", true);
 
 app.use(
   cors({
     origin: true,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: "*",
     allowedHeaders: ["X-Requested-With", "Content-Type", "Authorization"],
   })
 );
 app.options("*", cors());
 
-app.get("/api/islands", async (req, res) => {
-  try {
-    const islands = await Islands.find(req.query);
-
-    return res.status(200).json({
-      status: 200,
-      data: islands,
-      message: null,
-    });
-  } catch (error) {
-    console.log(error);
-
-    return res.status(500).json({
-      status: 500,
-      data: [],
-      message: "Failed to fetch islands",
-    });
-  }
-});
-
-app.get("/api/islands/:id", async (req, res) => {
-  try {
-    const islandId = req.params.id;
-
-    const island = await Islands.get(islandId);
-
-    return res.status(200).json({
-      status: 200,
-      data: island,
-      message: null,
-    });
-  } catch (error) {
-    if (error?.code === 101) {
-      return res.json({
-        status: 404,
-        data: null,
-        message: "Island not found",
-      });
-    }
-
-    console.log(error);
-    return res.status(500).json({
-      status: 500,
-      data: [],
-      message: "Failed to fetch island",
-    });
-  }
-});
+app.use("/api", AuthRoute);
+app.use("/api", IslandRoute);
 
 if (!process.env.TESTING) {
   const port = process.env.SERVER_PORT || 1337;
