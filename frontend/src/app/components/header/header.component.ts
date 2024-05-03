@@ -85,4 +85,8 @@ export class HeaderComponent {
 
     this.islandsService.redirectToShow(id);
   }
+
+  redirectToLogin(): void {
+    this.authService.redirectToLogin();
+  }
 }

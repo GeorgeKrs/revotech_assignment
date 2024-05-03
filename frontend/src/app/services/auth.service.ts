@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import serverConfig from '../constants/server.config';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -11,12 +12,8 @@ export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(false);
   readonly localStorageKey = 'revotechSessionToken';
 
-  constructor(private http: HttpClient) {
-    const storedAuthData = localStorage.getItem(this.localStorageKey);
-
-    if (storedAuthData) {
-      this.setAuthData(JSON.parse(storedAuthData));
-    }
+  constructor(private http: HttpClient, private router: Router) {
+    this.getAuthData();
   }
 
   login(username: string, password: string): Observable<any> {
@@ -48,7 +45,21 @@ export class AuthService {
     this.loggedIn.next(false);
   }
 
+  getAuthData(): { username: string; sessionToken: string } | null {
+    const storedAuthData = localStorage.getItem(this.localStorageKey);
+
+    if (storedAuthData) {
+      this.setAuthData(JSON.parse(storedAuthData));
+    }
+
+    return this.authData.getValue();
+  }
+
   isLoggedIn(): boolean {
     return this.authData.getValue() !== null;
+  }
+
+  redirectToLogin(): void {
+    this.router.navigate(['/auth/login']);
   }
 }

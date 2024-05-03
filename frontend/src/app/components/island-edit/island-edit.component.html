@@ -58,15 +58,25 @@
         >
           <div class="mt-4 w-full lg:max-w-lg lg:flex-auto">
             <input
+              [disabled]="updatingIsland"
               type="text"
               formControlName="title"
               placeholder="Title"
-              class="text-xl w-full font-bold text-slate-700 sm:text-3xl bg-slate-100 text-center border border-teal-800 p-1 rounded"
+              [ngClass]="
+                updatingIsland
+                  ? 'cursor-not-allowed text-xl w-full font-bold text-slate-700 sm:text-3xl bg-slate-200 text-center border border-teal-800 p-1 rounded'
+                  : 'text-xl w-full font-bold text-slate-700 sm:text-3xl bg-slate-100 text-center border border-teal-800 p-1 rounded'
+              "
             />
 
             <textarea
+              [disabled]="updatingIsland"
               formControlName="short_info"
-              class="mt-2 w-full h-32 font-bold text-slate-700 bg-slate-100 border border-teal-800 p-1 rounded"
+              [ngClass]="
+                updatingIsland
+                  ? 'cursor-not-allowed mt-2 w-full h-32 font-bold text-slate-700 bg-slate-200 border border-teal-800 p-1 rounded'
+                  : 'mt-2 w-full h-32 font-bold text-slate-700 bg-slate-100 border border-teal-800 p-1 rounded'
+              "
               placeholder="Short Info"
             ></textarea>
 
@@ -82,9 +92,14 @@
             </div>
 
             <textarea
+              [disabled]="updatingIsland"
               formControlName="description"
               rows="28"
-              class="w-full font-bold text-slate-700 bg-slate-100 border border-teal-800 p-1 rounded"
+              [ngClass]="
+                updatingIsland
+                  ? 'cursor-not-allowed w-full font-bold text-slate-700 bg-slate-200 border border-teal-800 p-1 rounded'
+                  : 'w-full font-bold text-slate-700 bg-slate-100 border border-teal-800 p-1 rounded'
+              "
               placeholder="Description"
             ></textarea>
           </div>
@@ -93,15 +108,15 @@
         <div class="flex justify-end mt-4">
           <button
             type="submit"
-            [disabled]="!islandForm.valid"
+            [disabled]="!islandForm.valid || updatingIsland"
             [ngClass]="
-              islandForm.valid
+              islandForm.valid || !updatingIsland
                 ? 'bg-slate-200 text-teal-900 shadow-sm hover:bg-slate-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600'
                 : 'cursor-not-allowed text-slate-200 bg-red-800'
             "
             class="inline-flex items-center gap-x-1 rounded-md px-2.5 py-1.5 text-sm font-semibold"
           >
-            Update
+            {{ updatingIsland ? "Please wait..." : "Update" }}
           </button>
         </div>
       </form>

@@ -22,10 +22,7 @@ export class IslandIndexComponent implements OnInit {
   ngOnInit() {
     this.islandsService.find().subscribe({
       next: (response: ApiResponse) => {
-        if (response.status === 200) {
-          this.islands = response.data;
-        }
-
+        this.islands = response.data;
         this.loading = false;
       },
       error: (err) => {

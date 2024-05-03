@@ -1,28 +1,56 @@
 <div *ngIf="island; else loading">
   <div class="bg-white py-28">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
-      <button
-        (click)="redirectToIndex()"
-        type="button"
-        class="hover:animate-pulse ease-in-out inline-flex items-center gap-x-1 rounded-md bg-slate-200 px-2.5 py-1.5 text-sm font-semibold text-teal-900 shadow-sm hover:bg-slate-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="w-4 h-4"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5"
-          />
-        </svg>
+      <div class="space-y-1">
+        <div>
+          <button
+            (click)="redirectToIndex()"
+            type="button"
+            class="hover:animate-pulse ease-in-out inline-flex items-center gap-x-1 rounded-md bg-slate-200 px-2.5 py-1.5 text-sm font-semibold text-teal-900 shadow-sm hover:bg-slate-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-4 h-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5"
+              />
+            </svg>
 
-        Go to Islands
-      </button>
+            Go to Islands
+          </button>
+        </div>
+        <div *ngIf="isLoggedIn()">
+          <button
+            (click)="redirectToEdit()"
+            type="button"
+            class="hover:animate-pulse ease-in-out inline-flex items-center gap-x-1 rounded-md bg-slate-200 px-2.5 py-1.5 text-sm font-semibold text-teal-900 shadow-sm hover:bg-slate-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-4 h-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5"
+              />
+            </svg>
+
+            Go to Edit Page
+          </button>
+        </div>
+      </div>
       <div
         class="mx-auto flex max-w-2xl flex-col items-end justify-between gap-16 lg:mx-0 lg:max-w-none lg:flex-row"
       >

@@ -24,6 +24,7 @@ export class IslandEditComponent implements OnInit {
   islandForm: FormGroup;
   island!: Island;
   loading: boolean = true;
+  updatingIsland: boolean = false;
 
   constructor(
     private router: Router,
@@ -46,33 +47,29 @@ export class IslandEditComponent implements OnInit {
       )
       .subscribe({
         next: (response: ApiResponse) => {
-          if (response.status === 200 && response.data) {
-            this.island = response.data;
+          this.island = response.data;
 
-            this.islandForm.patchValue({
-              title: this.island.title,
-              short_info: this.island.short_info,
-              description: this.island.description,
-            });
+          this.islandForm.patchValue({
+            title: this.island.title,
+            short_info: this.island.short_info,
+            description: this.island.description,
+          });
 
-            this.loading = false;
-            return;
-          }
-
-          if (response.status === 404) {
-            this.router.navigate(['/not-found']);
-          }
+          this.loading = false;
         },
         error: (error) => {
+          if (error.status === 404) {
+            this.router.navigate(['/not-found']);
+          }
+
           this.loading = false;
-          console.log('Error fetching island', error);
         },
       });
   }
 
   submit(): void {
     if (this.islandForm.valid) {
-      this.loading = true;
+      this.updatingIsland = true;
 
       this.islandsService
         .update(this.island.objectId, {
@@ -81,7 +78,10 @@ export class IslandEditComponent implements OnInit {
           description: this.islandForm.get('description')!.value,
         })
         .subscribe({
-          next: () => console.log('Island updated successfully'),
+          next: () => {
+            this.updatingIsland = false;
+            this.redirectToShow();
+          },
           error: (err) => console.error('Error updating island:', err),
         });
     }

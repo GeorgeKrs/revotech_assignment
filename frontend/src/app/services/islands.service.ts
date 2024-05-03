@@ -1,14 +1,19 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import appConfig from '../constants/server.config';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class IslandsService {
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   find(term: string | null = null): Observable<any> {
     if (term && term.trim().length > 0) {
@@ -38,10 +43,17 @@ export class IslandsService {
       description: string | null;
     }
   ): Observable<any> {
-    console.log('in service update');
+    const authData = this.authService.getAuthData();
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${authData?.sessionToken}`,
+    });
+
     return this.http.put(
       `${appConfig.serverUrl}${appConfig.apiPrefix}/islands/${id}/update`,
-      payload
+      payload,
+      { headers }
     );
   }
 

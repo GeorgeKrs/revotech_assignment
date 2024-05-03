@@ -7,6 +7,7 @@ import { IslandsService } from '../../services/islands.service';
 import { GoogleService } from '../../services/google.service';
 import { ApiResponse } from '../../interfaces/apiResponse';
 import { switchMap } from 'rxjs/operators';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-island-show',
@@ -23,6 +24,7 @@ export class IslandShowComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private islandsService: IslandsService,
+    private authService: AuthService,
     private googleService: GoogleService
   ) {}
 
@@ -35,25 +37,29 @@ export class IslandShowComponent implements OnInit {
       )
       .subscribe({
         next: (response: ApiResponse) => {
-          if (response.status === 200 && response.data) {
-            this.island = response.data;
-            this.loading = false;
-            return;
-          }
-
-          if (response.status === 404) {
-            this.router.navigate(['/not-found']);
-          }
+          this.island = response.data;
+          this.loading = false;
         },
         error: (error) => {
           this.loading = false;
-          console.log('Error fetching island', error);
+
+          if (error.status === 404) {
+            this.router.navigate(['/not-found']);
+          }
         },
       });
   }
 
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
   redirectToIndex(): void {
     this.islandsService.redirectToIndex();
+  }
+
+  redirectToEdit(): void {
+    this.islandsService.redirectToEdit(this.island.objectId);
   }
 
   openGoogleMaps(): void {

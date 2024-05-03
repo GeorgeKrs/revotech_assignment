@@ -1,0 +1,42 @@
+<div class="flex items-center justify-center mt-48">
+  <div class="text-center">
+    <p class="text-teal-600 font-bold text-lg">
+      Please enter your credentials.
+    </p>
+    <form [formGroup]="loginForm" (ngSubmit)="submit()" class="mt-8 space-y-6">
+      <div>
+        <input
+          [disabled]="loading"
+          type="text"
+          placeholder="Username"
+          formControlName="username"
+          name="username"
+          class="text-lg text-teal-600 font-semibold rounded bg-white border border-teal-500 px-6 py-3 w-full max-w-xs"
+          required
+        />
+      </div>
+      <div>
+        <input
+          [disabled]="loading"
+          type="password"
+          placeholder="Password"
+          formControlName="password"
+          name="password"
+          class="text-lg text-teal-600 font-semibold rounded bg-white border border-teal-500 px-6 py-3 w-full max-w-xs"
+          required
+        />
+      </div>
+      <button
+        type="submit"
+        [disabled]="loading || !formIsValid()"
+        [ngClass]="
+          formIsValid()
+            ? 'text-lg cursor-pointer font-semibold rounded bg-teal-600 text-white px-6 py-3 w-full max-w-xs hover:bg-teal-500 transition-colors duration-200 ease-in-out'
+            : 'cursor-not-allowed text-lg font-semibold rounded bg-slate-600 text-white px-6 py-3 w-full max-w-xs'
+        "
+      >
+        {{ loading ? "Please wait..." : "Log In" }}
+      </button>
+    </form>
+  </div>
+</div>
