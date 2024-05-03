@@ -1,0 +1,147 @@
+<div *ngIf="island; else loading">
+  <div class="bg-white py-28">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="space-y-1">
+        <div>
+          <button
+            (click)="goToIndex()"
+            type="button"
+            class="hover:animate-pulse ease-in-out inline-flex items-center gap-x-1 rounded-md bg-slate-200 px-2.5 py-1.5 text-sm font-semibold text-teal-900 shadow-sm hover:bg-slate-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-4 h-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5"
+              />
+            </svg>
+
+            Go to Islands
+          </button>
+        </div>
+        <div>
+          <button
+            (click)="goToIndex()"
+            type="button"
+            class="hover:animate-pulse ease-in-out inline-flex items-center gap-x-1 rounded-md bg-slate-200 px-2.5 py-1.5 text-sm font-semibold text-teal-900 shadow-sm hover:bg-slate-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-4 h-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5"
+              />
+            </svg>
+
+            Go to Show Page
+          </button>
+        </div>
+      </div>
+
+      <form [formGroup]="islandForm" (ngSubmit)="submit()">
+        <div
+          class="mx-auto flex max-w-2xl flex-col items-end justify-between gap-16 lg:mx-0 lg:max-w-none lg:flex-row"
+        >
+          <div class="mt-4 w-full lg:max-w-lg lg:flex-auto">
+            <input
+              type="text"
+              formControlName="title"
+              placeholder="Title"
+              class="text-xl w-full font-bold text-slate-700 sm:text-3xl bg-slate-100 text-center border border-teal-800 p-1 rounded"
+            />
+
+            <textarea
+              formControlName="short_info"
+              class="mt-2 w-full h-32 font-bold text-slate-700 bg-slate-100 border border-teal-800 p-1 rounded"
+              placeholder="Short Info"
+            ></textarea>
+
+            <img
+              src="{{ island.photo }}"
+              alt="Island Image"
+              class="mt-2 w-full rounded-2xl bg-slate-50 object-cover lg:aspect-auto lg:h-[34.5rem]"
+            />
+          </div>
+          <div class="w-full lg:max-w-xl lg:flex-auto text-slate-700">
+            <div class="font-bold mb-2 italic text-lg">
+              More about the island...
+            </div>
+
+            <textarea
+              formControlName="description"
+              rows="28"
+              class="w-full font-bold text-slate-700 bg-slate-100 border border-teal-800 p-1 rounded"
+              placeholder="Description"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="flex justify-end mt-4">
+          <button
+            (click)="submit()"
+            class="inline-flex items-center gap-x-1 rounded-md bg-slate-200 px-2.5 py-1.5 text-sm font-semibold text-teal-900 shadow-sm hover:bg-slate-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600"
+          >
+            Update
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="bg-white py-28">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="animate-pulse">
+        <div
+          class="mx-auto flex max-w-2xl flex-col items-end justify-between gap-16 lg:mx-0 lg:max-w-none lg:flex-row"
+        >
+          <div class="w-full lg:max-w-lg lg:flex-auto space-y-2">
+            <div class="h-8 bg-gray-300 rounded-md"></div>
+            <div class="h-4 bg-gray-300 rounded"></div>
+            <div class="h-4 bg-gray-300 rounded w-2/3"></div>
+            <div class="h-4 bg-gray-300 rounded w-5/6"></div>
+            <div class="h-4 bg-gray-300 rounded w-2/3"></div>
+            <div class="mt-40 h-96 bg-gray-300 rounded-2xl w-full"></div>
+          </div>
+          <div class="w-full lg:max-w-xl lg:flex-auto">
+            <div class="h-6 bg-gray-300 rounded-md w-1/2 mb-2"></div>
+            <div class="space-y-2">
+              <div class="h-4 bg-gray-300 rounded w-5/6"></div>
+              <div class="h-4 bg-gray-300 rounded w-6/6"></div>
+              <div class="h-4 bg-gray-300 rounded w-5/6"></div>
+              <div class="h-4 bg-gray-300 rounded w-6/6"></div>
+              <div class="h-4 bg-gray-300 rounded w-5/6"></div>
+              <div class="h-4 bg-gray-300 rounded w-4/6"></div>
+              <div class="h-4 bg-gray-300 rounded w-2/6"></div>
+              <div class="h-4 bg-gray-300 rounded w-4/6"></div>
+              <div class="h-4 bg-gray-300 rounded w-3/6"></div>
+              <div class="h-4 bg-gray-300 rounded w-5/6"></div>
+              <div class="h-4 bg-gray-300 rounded w-4/6"></div>
+              <div class="h-4 bg-gray-300 rounded w-5/6"></div>
+              <div class="h-4 bg-gray-300 rounded w-3/6"></div>
+            </div>
+          </div>
+        </div>
+        <div class="flex justify-end mt-4 px-6 space-x-2">
+          <div class="w-24 h-8 bg-gray-300 rounded-md"></div>
+          <div class="w-24 h-8 bg-gray-300 rounded-md"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
