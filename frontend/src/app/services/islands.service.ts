@@ -22,11 +22,18 @@ export class IslandsService {
     return this.http.get(`http://localhost:5000/api/islands/${id}`);
   }
 
-  update(id: string, payload: any): Observable<any> {
-    return this.http.put(`http://localhost:5000/api/islands/${id}/update`, {
-      // title,
-      // short_info,
-      // description,
-    });
+  update(
+    id: string,
+    payload: {
+      title: string | null;
+      short_info: string | null;
+      description: string | null;
+    }
+  ): Observable<any> {
+    console.log('in service update');
+    return this.http.put(
+      `http://localhost:5000/api/islands/${id}/update`,
+      payload
+    );
   }
 }

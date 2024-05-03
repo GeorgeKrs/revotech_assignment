@@ -4,11 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { Island } from '../../interfaces/island';
 import { IslandsService } from '../../services/islands.service';
-import { GoogleService } from '../../services/google.service';
 import { ApiResponse } from '../../interfaces/apiResponse';
 import { switchMap } from 'rxjs/operators';
 import {
-  FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -30,24 +28,16 @@ export class IslandEditComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private islandsService: IslandsService,
-    private googleService: GoogleService,
-    private formBuilder: FormBuilder
+    private islandsService: IslandsService
   ) {
     this.islandForm = new FormGroup({
-      title: new FormControl(''), // Ensure it's a FormControl, not a string
-      short_info: new FormControl(''),
-      description: new FormControl(''),
+      title: new FormControl('', [Validators.required]),
+      short_info: new FormControl('', [Validators.required]),
+      description: new FormControl('', [Validators.required]),
     });
   }
 
   ngOnInit(): void {
-    this.islandForm = this.formBuilder.group({
-      title: ['', Validators.required],
-      short_info: ['', Validators.required],
-      description: ['', Validators.required],
-    });
-
     this.route.paramMap
       .pipe(
         switchMap(() =>
@@ -81,20 +71,23 @@ export class IslandEditComponent implements OnInit {
   }
 
   submit(): void {
-    console.log(this.islandForm.value);
-    // if (this.form.valid) {
-    //   console.log('Form data:', this.form.value);
-    // }
+    if (this.islandForm.valid) {
+      this.loading = true;
+
+      this.islandsService
+        .update(this.island.objectId, {
+          title: this.islandForm.get('title')!.value,
+          short_info: this.islandForm.get('short_info')!.value,
+          description: this.islandForm.get('description')!.value,
+        })
+        .subscribe({
+          next: () => console.log('Island updated successfully'),
+          error: (err) => console.error('Error updating island:', err),
+        });
+    }
   }
 
   goToIndex(): void {
     this.router.navigate(['/']);
-  }
-
-  openGoogleMaps(): void {
-    this.googleService.openInGoogleMaps(
-      this.island.location[0],
-      this.island.location[1]
-    );
   }
 }
