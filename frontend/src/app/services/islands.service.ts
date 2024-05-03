@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import appConfig from '../constants/app.config';
 
 @Injectable({
   providedIn: 'root',
@@ -12,15 +13,21 @@ export class IslandsService {
   find(term: string | null = null): Observable<any> {
     if (term && term.trim().length > 0) {
       return this.http.get(
-        `http://localhost:5000/api/islands?term=${term.trim()}`
+        `${appConfig.serverUrl}${
+          appConfig.apiPrefix
+        }/islands?term=${term.trim()}`
       );
     }
 
-    return this.http.get('http://localhost:5000/api/islands');
+    return this.http.get(
+      `${appConfig.serverUrl}${appConfig.apiPrefix}/islands`
+    );
   }
 
   get(id: string): Observable<any> {
-    return this.http.get(`http://localhost:5000/api/islands/${id}`);
+    return this.http.get(
+      `${appConfig.serverUrl}${appConfig.apiPrefix}/islands/${id}`
+    );
   }
 
   update(
@@ -33,7 +40,7 @@ export class IslandsService {
   ): Observable<any> {
     console.log('in service update');
     return this.http.put(
-      `http://localhost:5000/api/islands/${id}/update`,
+      `${appConfig.serverUrl}${appConfig.apiPrefix}/islands/${id}/update`,
       payload
     );
   }
