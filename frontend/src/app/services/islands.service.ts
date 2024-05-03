@@ -43,10 +43,10 @@ export class IslandsService {
   }
 
   redirectToShow(id: string): void {
-    this.router.navigate(['/islands/:id']);
+    this.router.navigate([`/islands/${id}`]);
   }
 
   redirectToEdit(id: string): void {
-    this.router.navigate(['/islands/:id/edit']);
+    this.router.navigate([`/islands/${id}/edit`]);
   }
 }
