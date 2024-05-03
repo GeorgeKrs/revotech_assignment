@@ -42,7 +42,13 @@ class IslandController {
 
   static update = async (req, res) => {
     try {
-      const island = await Island.update(req.params.id, req.body);
+      let island = await Island.get(req.params.id);
+
+      if (!island) {
+        return res.status(404).json(ApiResponseDto.notFound());
+      }
+
+      island = await new Island(island).update(req.body, req.sessionToken);
 
       return res.status(200).json(ApiResponseDto.success({ data: island }));
     } catch (error) {

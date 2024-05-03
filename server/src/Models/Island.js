@@ -1,4 +1,8 @@
 class Island {
+  constructor(island) {
+    this.island = island;
+  }
+
   static find = async (requestParameters) => {
     let query = new Parse.Query("Islands");
 
@@ -18,24 +22,24 @@ class Island {
     return await new Parse.Query("Islands").get(id);
   };
 
-  static update = async (id, payload) => {
-    const island = await this.get(id);
-
+  update = async (payload, sessionToken) => {
     if (payload.title?.trim()) {
-      island.set("title", payload.title.trim());
+      this.island.set("title", payload.title.trim());
     }
 
     if (payload.short_info?.trim()) {
-      island.set("short_info", payload.short_info.trim());
+      this.island.set("short_info", payload.short_info.trim());
     }
 
     if (payload.description?.trim()) {
-      island.set("description", payload.description.trim());
+      this.island.set("description", payload.description.trim());
     }
 
-    await island.save();
+    await this.island.save(null, {
+      sessionToken,
+    });
 
-    return island;
+    return this.island;
   };
 }
 
