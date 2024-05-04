@@ -45,7 +45,7 @@ class IslandController {
       let island = await Island.get(req.params.id);
 
       if (!island) {
-        return res.status(404).json(ApiResponseDto.notFound());
+        return res.status(404).json(ApiResponseDto.notFound({}));
       }
 
       island = await new Island(island).update(req.body, req.sessionToken);
@@ -53,6 +53,10 @@ class IslandController {
       return res.status(200).json(ApiResponseDto.success({ data: island }));
     } catch (error) {
       console.log(error);
+
+      if (error?.code === 119) {
+        return res.status(401).json(ApiResponseDto.unauthorized({}));
+      }
 
       return res
         .status(500)

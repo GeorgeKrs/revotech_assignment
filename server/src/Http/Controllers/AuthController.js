@@ -1,8 +1,13 @@
+import Session from "../../Models/Session.js";
 import ApiResponseDto from "../ApiHelpers/ApiResponseDto.js";
 
 class AuthController {
   static login = async (req, res) => {
     try {
+      if (req.sessionToken) {
+        await new Session(req.sessionToken).delete();
+      }
+
       const user = await Parse.User.logIn(req.body.username, req.body.password);
 
       return res.status(200).json(
@@ -32,6 +37,11 @@ class AuthController {
 
   static logout = async (req, res) => {
     try {
+      if (req.sessionToken) {
+        await new Session(req.sessionToken).delete();
+      }
+
+      req.sessionToken = null;
       await Parse.User.logOut();
 
       return res

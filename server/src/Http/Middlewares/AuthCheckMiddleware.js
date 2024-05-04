@@ -1,25 +1,22 @@
+import Session from "../../Models/Session.js";
 import ApiResponseDto from "../ApiHelpers/ApiResponseDto.js";
 
 const AuthCheckMiddleware = async (req, res, next) => {
-  const authHeader = req.headers["authorization"];
-  const sessionToken = authHeader && authHeader.split(" ")[1];
-
-  if (!sessionToken) {
-    return res.status(401).json(ApiResponseDto.unauthorized());
-  }
-
   try {
-    const sessionCollection = Parse.Object.extend("_Session");
-    const session = await new Parse.Query(sessionCollection)
-      .equalTo("sessionToken", sessionToken)
-      .first({ useMasterKey: true });
+    const authHeader = req.headers["authorization"];
+    const sessionToken = authHeader && authHeader.split(" ")[1];
+
+    if (!sessionToken) {
+      return next();
+    }
+
+    const session = await new Session(sessionToken).get();
 
     if (!session) {
-      return res.status(401).json(ApiResponseDto.unauthorized());
+      return next();
     }
 
     req.sessionToken = sessionToken;
-    req.user = session.get("user");
 
     return next();
   } catch (error) {
