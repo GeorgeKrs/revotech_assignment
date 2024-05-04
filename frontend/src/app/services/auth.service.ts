@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import serverConfig from '../constants/server.config';
@@ -17,19 +17,31 @@ export class AuthService {
   }
 
   login(username: string, password: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${this.getAuthData()?.sessionToken}`,
+    });
+
     return this.http.post(
       `${serverConfig.serverUrl}${serverConfig.apiPrefix}/auth/login`,
       {
         username,
         password,
-      }
+      },
+      { headers }
     );
   }
 
   logout(): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${this.getAuthData()?.sessionToken}`,
+    });
+
     return this.http.post(
       `${serverConfig.serverUrl}${serverConfig.apiPrefix}/auth/logout`,
-      {}
+      {},
+      { headers }
     );
   }
 
