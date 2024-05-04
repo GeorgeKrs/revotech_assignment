@@ -35,11 +35,8 @@ export class HeaderComponent {
 
   handleLogin(): void {
     this.authService.login('admin', 'admin').subscribe({
-      next: (response: ApiResponse) => {
-        if (response.status === 200) {
-          this.authService.setAuthData(response.data);
-        }
-      },
+      next: (response: ApiResponse) =>
+        this.authService.setAuthData(response.data),
       error: (error) => {
         throw new Error('Error logging in', error);
       },
@@ -49,8 +46,10 @@ export class HeaderComponent {
   handleLogout(): void {
     this.authService.logout().subscribe({
       next: (response: ApiResponse) => {
-        if (response.status === 200) {
-          this.authService.clearAuthData();
+        this.authService.clearAuthData();
+
+        if (window.location.href.endsWith('/edit')) {
+          window.location.href = window.location.href.slice(0, -5);
         }
       },
 
