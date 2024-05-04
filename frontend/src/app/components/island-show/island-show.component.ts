@@ -64,6 +64,7 @@ export class IslandShowComponent implements OnInit {
 
   openGoogleMaps(): void {
     this.googleService.openInGoogleMaps(
+      this.island.title,
       this.island.location[0],
       this.island.location[1]
     );
