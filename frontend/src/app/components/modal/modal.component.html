@@ -1,0 +1,24 @@
+<div
+  class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
+  *ngIf="show"
+>
+  <div
+    class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white"
+  >
+    <div class="italic font-bold text-teal-900 text-center text-xl">
+      {{ island.title }}
+    </div>
+    <div class="mt-2 text-center">
+      <img [src]="island.photo" alt="Island image" class="mx-auto" />
+
+      <div class="flex justify-end items-center py-2">
+        <button
+          (click)="close()"
+          class="px-4 py-1 bg-teal-600 text-slate-50 text-base font-medium rounded-md w-auto shadow-sm hover:bg-teal-700 focus:outline-none"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

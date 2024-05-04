@@ -1,6 +1,7 @@
 <div class="flex flex-col h-full border rounded border-teal-900">
   <img
-    class="flex-shrink-0 w-full h-40"
+    (click)="openPreviewModal()"
+    class="cursor-pointer flex-shrink-0 w-full h-40"
     src="{{ island.photo_thumb }}"
     alt="Island image"
   />
@@ -39,3 +40,9 @@
     </button>
   </div>
 </div>
+
+<app-modal
+  [show]="showModal"
+  [island]="island"
+  (closeModal)="closePreviewModal()"
+/>
