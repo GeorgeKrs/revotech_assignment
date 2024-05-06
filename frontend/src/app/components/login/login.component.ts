@@ -21,6 +21,12 @@ export class LoginComponent {
   loginForm: FormGroup;
   loading: boolean = false;
 
+  errorMessage: string | null = null;
+  timeoutDurationInMs = 5000;
+  timeLeft = this.timeoutDurationInMs;
+  timeDecreaseInMs = 50;
+  intervalId: any;
+
   constructor(
     private authService: AuthService,
     private islandService: IslandsService
@@ -45,9 +51,10 @@ export class LoginComponent {
             this.authService.setAuthData(response.data);
             this.islandService.redirectToIndex();
           },
-          error: (error) => {
+          error: (response) => {
             this.loading = false;
-            console.log(error);
+            this.triggerAutoClearErrorMessage();
+            this.errorMessage = response.error.message;
           },
         });
     }
@@ -55,5 +62,20 @@ export class LoginComponent {
 
   formIsValid(): boolean {
     return this.loginForm.valid;
+  }
+
+  triggerAutoClearErrorMessage() {
+    this.timeLeft = this.timeoutDurationInMs;
+    this.intervalId = setInterval(() => {
+      this.timeLeft -= this.timeDecreaseInMs;
+      if (this.timeLeft <= 0) {
+        this.clearErrorMessage();
+      }
+    }, this.timeDecreaseInMs);
+  }
+
+  clearErrorMessage() {
+    this.errorMessage = null;
+    clearInterval(this.intervalId);
   }
 }
