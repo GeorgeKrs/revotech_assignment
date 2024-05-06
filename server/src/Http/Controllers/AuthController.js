@@ -22,7 +22,8 @@ class AuthController {
       if (error?.code === 101) {
         return res.status(401).json(
           ApiResponseDto.unauthorized({
-            message: "Invalid username/password.",
+            message:
+              "The credentials you provided are wrong! Invalid username/password.",
           })
         );
       }
