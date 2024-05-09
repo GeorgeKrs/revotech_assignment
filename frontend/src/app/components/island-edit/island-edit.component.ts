@@ -6,6 +6,7 @@ import { Island } from '../../interfaces/island';
 import { IslandsService } from '../../services/islands.service';
 import { ApiResponse } from '../../interfaces/apiResponse';
 import { switchMap } from 'rxjs/operators';
+import { maxFileSizeValidator } from '../../validators/fileValidators';
 import {
   FormControl,
   FormGroup,
@@ -25,6 +26,7 @@ export class IslandEditComponent implements OnInit {
   island!: Island;
   loading: boolean = true;
   updatingIsland: boolean = false;
+  photoPreview!: string;
 
   constructor(
     private router: Router,
@@ -32,9 +34,13 @@ export class IslandEditComponent implements OnInit {
     private islandsService: IslandsService
   ) {
     this.islandForm = new FormGroup({
-      title: new FormControl('', [Validators.required]),
-      short_info: new FormControl('', [Validators.required]),
-      description: new FormControl('', [Validators.required]),
+      title: new FormControl(null, [Validators.required]),
+      short_info: new FormControl(null, [Validators.required]),
+      description: new FormControl(null, [Validators.required]),
+      photo: new FormControl(null, [
+        Validators.required,
+        maxFileSizeValidator(5 * 1024 * 1024),
+      ]),
     });
   }
 
@@ -48,11 +54,13 @@ export class IslandEditComponent implements OnInit {
       .subscribe({
         next: (response: ApiResponse) => {
           this.island = response.data;
+          this.photoPreview = this.island.photo;
 
           this.islandForm.patchValue({
             title: this.island.title,
             short_info: this.island.short_info,
             description: this.island.description,
+            photo: this.island.photo,
           });
 
           this.loading = false;
@@ -67,6 +75,28 @@ export class IslandEditComponent implements OnInit {
       });
   }
 
+  openImageSelector(): void {
+    document.getElementById('photo-upload')?.click();
+  }
+
+  handleImageChange(event: Event): void {
+    const files = (event.target as HTMLInputElement).files;
+
+    if (files && files.length > 0) {
+      this.islandForm.get('photo')?.setValue(files[0]);
+      this.photoPreview = URL.createObjectURL(files[0]);
+    }
+  }
+
+  photoHasChanged(): boolean {
+    return this.island.photo !== this.islandForm.get('photo')!.value;
+  }
+
+  keepOriginalPhoto(): void {
+    this.islandForm.get('photo')?.setValue(this.island.photo);
+    this.photoPreview = this.island.photo;
+  }
+
   submit(): void {
     if (this.islandForm.valid) {
       this.updatingIsland = true;
@@ -76,6 +106,7 @@ export class IslandEditComponent implements OnInit {
           title: this.islandForm.get('title')!.value,
           short_info: this.islandForm.get('short_info')!.value,
           description: this.islandForm.get('description')!.value,
+          photo: this.islandForm.get('photo')!.value ?? null,
         })
         .subscribe({
           next: () => {

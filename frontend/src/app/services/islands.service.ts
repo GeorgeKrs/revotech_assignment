@@ -41,6 +41,7 @@ export class IslandsService {
       title: string | null;
       short_info: string | null;
       description: string | null;
+      photo: File | null;
     }
   ): Observable<any> {
     const authData = this.authService.getAuthData();

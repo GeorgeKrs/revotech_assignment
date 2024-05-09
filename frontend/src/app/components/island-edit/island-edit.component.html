@@ -52,7 +52,11 @@
         </div>
       </div>
 
-      <form [formGroup]="islandForm" (ngSubmit)="submit()">
+      <form
+        [formGroup]="islandForm"
+        (ngSubmit)="submit()"
+        enctype="multipart/form-data"
+      >
         <div
           class="mx-auto flex max-w-2xl flex-col items-end justify-between gap-16 lg:mx-0 lg:max-w-none lg:flex-row"
         >
@@ -80,11 +84,62 @@
               placeholder="Short Info"
             ></textarea>
 
-            <img
-              src="{{ island.photo }}"
-              alt="Island Image"
-              class="mt-2 w-full rounded-2xl bg-slate-50 object-cover lg:aspect-auto lg:h-[34.5rem]"
-            />
+            <div>
+              <img
+                src="{{ photoPreview }}"
+                alt="Island Image"
+                class="mt-2 w-full rounded-2xl bg-slate-50 object-cover lg:aspect-auto lg:h-[34.5rem]"
+              />
+
+              <div *ngIf="!updatingIsland" class="mt-2 flex justify-between">
+                <label
+                  class="relative cursor-pointer rounded-md font-bold text-gray-700 focus-within:outline-none focus-within:ring-2"
+                >
+                  <button
+                    (click)="openImageSelector()"
+                    type="button"
+                    class="inline-flex items-center gap-x-1.5 rounded-md bg-slate-100 px-2.5 py-1.5 text-sm font-semibold text-teal-900 shadow-sm hover:bg-slate-300 focus:ring-offset-0 focus:ring-0"
+                  >
+                    Change
+                  </button>
+                  <input
+                    id="photo-upload"
+                    formControlName="photo"
+                    type="file"
+                    class="sr-only"
+                    accept="image/*"
+                    (change)="handleImageChange($event)"
+                  />
+                </label>
+
+                <button
+                  *ngIf="photoHasChanged()"
+                  (click)="keepOriginalPhoto()"
+                  type="button"
+                  class="inline-flex items-center gap-x-1.5 rounded-md bg-slate-100 px-2.5 py-1.5 text-sm font-semibold text-teal-900 shadow-sm hover:bg-slate-300 focus:ring-offset-0 focus:ring-0"
+                >
+                  Restore
+                </button>
+              </div>
+
+              <div
+                *ngIf="photoHasChanged()"
+                class="mt-4 italic font-bold text-center"
+              >
+                <div
+                  *ngIf="islandForm.get('photo')?.errors?.maxSize"
+                  class="text-red-700"
+                >
+                  Warning! Photo must not exceed 5MB.
+                </div>
+                <div
+                  *ngIf="!islandForm.get('photo')?.errors?.maxSize"
+                  class="text-teal-700"
+                >
+                  *An image thumbnail will be created after updating the island.
+                </div>
+              </div>
+            </div>
           </div>
           <div class="w-full lg:max-w-xl lg:flex-auto text-slate-700">
             <div class="font-bold mb-2 italic text-lg">
@@ -105,7 +160,7 @@
           </div>
         </div>
 
-        <div class="flex justify-end mt-4">
+        <div class="flex justify-end mt-2">
           <button
             type="submit"
             [disabled]="!islandForm.valid || updatingIsland"
