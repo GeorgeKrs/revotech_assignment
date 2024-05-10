@@ -5,6 +5,11 @@ class Island {
     this.island = island;
   }
 
+  /*
+   *
+   *  Static Methods
+   *
+   */
   static find = async (requestParameters) => {
     let query = new Parse.Query("Islands");
 
@@ -24,6 +29,11 @@ class Island {
     return await new Parse.Query("Islands").get(id);
   };
 
+  /*
+   *
+   *  Public Methods
+   *
+   */
   update = async (payload, sessionToken) => {
     if (payload.title?.trim()) {
       this.island.set("title", payload.title.trim());
@@ -48,8 +58,13 @@ class Island {
     return this.island;
   };
 
+  /*
+   *
+   *  Private Methods
+   *
+   */
   #handlePhotoUpdate = async (encodedPhoto, sessionToken) => {
-    /**
+    /*
      * Store new photo
      */
     const photoExtension = this.#getFileExtension(encodedPhoto);
@@ -70,30 +85,25 @@ class Island {
     const base64ToImage = encodedPhoto.split(";base64,").pop();
     const imageBuffer = Buffer.from(base64ToImage, "base64");
 
-    sharp(imageBuffer)
+    const processedBuffer = await sharp(imageBuffer)
       .resize(
         parseInt(process.env.THUMB_HEIGHT),
         parseInt(process.env.THUMB_WIDTH)
       )
       .toFormat("jpg")
-      .toBuffer()
-      .then(async (processedBuffer) => {
-        const imageToBase64 = `data:image/${photoExtension};base64,${processedBuffer.toString(
-          "base64"
-        )}`;
+      .toBuffer();
 
-        const thumbnail = new Parse.File(
-          this.island.get("title") + "_thumb." + photoExtension,
-          { base64: imageToBase64 }
-        );
+    const imageToBase64 = `data:image/${photoExtension};base64,${processedBuffer.toString(
+      "base64"
+    )}`;
 
-        await thumbnail.save(null, { sessionToken });
-        this.island.set("photo_thumb", thumbnail.url());
-      })
-      .catch((err) => {
-        this.island.set("photo_thumb", photo.url());
-        throw Error("Error on creating thumbnail", err);
-      });
+    const thumbnail = new Parse.File(
+      this.island.get("title") + "_thumb." + photoExtension,
+      { base64: imageToBase64 }
+    );
+
+    await thumbnail.save(null, { sessionToken });
+    this.island.set("photo_thumb", thumbnail.url());
   };
 
   #getFileExtension(base64String) {

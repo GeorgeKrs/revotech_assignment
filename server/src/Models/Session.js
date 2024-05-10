@@ -3,6 +3,11 @@ class Session {
     this.sessionToken = sessionToken;
   }
 
+  /*
+   *
+   *  Public Methods
+   *
+   */
   get = async () => {
     const sessionCollection = await Parse.Object.extend("_Session");
 
