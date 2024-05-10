@@ -1,3 +1,5 @@
+import sharp from "sharp";
+
 class Island {
   constructor(island) {
     this.island = island;
@@ -35,12 +37,89 @@ class Island {
       this.island.set("description", payload.description.trim());
     }
 
+    if (this.island.get("photo") !== payload.photo) {
+      await this.handlePhotoUpdate(payload.photo, sessionToken);
+    }
+
     await this.island.save(null, {
       sessionToken,
     });
 
     return this.island;
   };
+
+  handlePhotoUpdate = async (encodedPhoto, sessionToken) => {
+    /**
+     * Store new photo
+     */
+    const photoExtension = this.#getFileExtension(encodedPhoto);
+
+    const photo = new Parse.File(
+      this.island.get("title") + "." + photoExtension,
+      {
+        base64: encodedPhoto,
+      }
+    );
+
+    await photo.save(null, { sessionToken });
+    this.island.set("photo", photo.url());
+
+    /**
+     * Create thumbnail from new photo
+     */
+    const base64ToImage = encodedPhoto.split(";base64,").pop();
+    const imageBuffer = Buffer.from(base64ToImage, "base64");
+
+    sharp(imageBuffer)
+      .resize(
+        parseInt(process.env.THUMB_HEIGHT),
+        parseInt(process.env.THUMB_WIDTH)
+      )
+      .toFormat("jpg")
+      .toBuffer()
+      .then(async (processedBuffer) => {
+        const imageToBase64 = `data:image/${photoExtension};base64,${processedBuffer.toString(
+          "base64"
+        )}`;
+
+        const thumbnail = new Parse.File(
+          this.island.get("title") + "_thumb." + photoExtension,
+          { base64: imageToBase64 }
+        );
+
+        await thumbnail.save(null, { sessionToken });
+
+        this.island.set("photo_thumb", thumbnail.url());
+      })
+      .catch((err) => {
+        this.island.set("photo_thumb", photo.url());
+        console.log(err);
+        throw Error("Error on creating thumbnail", err);
+      });
+  };
+
+  #getFileExtension(base64String) {
+    /**
+     * Regex to extract the content type from the base64String
+     */
+    const result = base64String.match(/^data:(.*?);base64,/);
+
+    if (result && result.length > 1) {
+      /**
+       * Example: image/jpeg
+       */
+      const mimeType = result[1];
+      const parts = mimeType.split("/");
+      /**
+       * Example: return jpeg
+       */
+      return parts[1];
+    }
+
+    throw new Error(
+      "Invalid or unsupported data format on Island.getFileExtension"
+    );
+  }
 }
 
 export default Island;

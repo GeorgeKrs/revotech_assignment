@@ -14,6 +14,14 @@ export const config = {
   appId: process.env.APP_ID,
   masterKey: process.env.MASTER_KEY,
   serverURL: process.env.SERVER_URL,
+  fileUpload: {
+    enableForPublic: true,
+  },
+  // fileUpload: {
+  //   enableForPublic: false,
+  //   enableForAnonymousUser: false,
+  //   enableForAuthenticatedUser: true,
+  // },
 };
 
 export const app = express();
@@ -40,7 +48,8 @@ app.use(
 );
 app.options("*", cors());
 
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 app.use("/api", AuthRoute);
 app.use("/api", IslandRoute);
