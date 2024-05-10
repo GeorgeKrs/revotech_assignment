@@ -14,6 +14,7 @@ export const config = {
   appId: process.env.APP_ID,
   masterKey: process.env.MASTER_KEY,
   serverURL: process.env.SERVER_URL,
+  //TODO: Troubleshoot the parameter below
   fileUpload: {
     enableForPublic: true,
   },
