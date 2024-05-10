@@ -38,7 +38,7 @@ class Island {
     }
 
     if (this.island.get("photo") !== payload.photo) {
-      await this.handlePhotoUpdate(payload.photo, sessionToken);
+      await this.#handlePhotoUpdate(payload.photo, sessionToken);
     }
 
     await this.island.save(null, {
@@ -48,7 +48,7 @@ class Island {
     return this.island;
   };
 
-  handlePhotoUpdate = async (encodedPhoto, sessionToken) => {
+  #handlePhotoUpdate = async (encodedPhoto, sessionToken) => {
     /**
      * Store new photo
      */
@@ -88,12 +88,10 @@ class Island {
         );
 
         await thumbnail.save(null, { sessionToken });
-
         this.island.set("photo_thumb", thumbnail.url());
       })
       .catch((err) => {
         this.island.set("photo_thumb", photo.url());
-        console.log(err);
         throw Error("Error on creating thumbnail", err);
       });
   };
