@@ -38,10 +38,10 @@ export class IslandsService {
   update(
     id: string,
     payload: {
-      title: string | null;
-      short_info: string | null;
-      description: string | null;
-      photo: File | null;
+      title: string;
+      short_info: string;
+      description: string;
+      photo: string;
     }
   ): Observable<any> {
     const authData = this.authService.getAuthData();

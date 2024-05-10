@@ -83,8 +83,14 @@ export class IslandEditComponent implements OnInit {
     const files = (event.target as HTMLInputElement).files;
 
     if (files && files.length > 0) {
-      this.islandForm.get('photo')?.setValue(files[0]);
       this.photoPreview = URL.createObjectURL(files[0]);
+
+      //Convert to base64 string
+      const reader = new FileReader();
+      reader.readAsDataURL(files[0]);
+      reader.onloadend = () => {
+        this.islandForm.get('photo')!.setValue(reader.result);
+      };
     }
   }
 
@@ -106,7 +112,7 @@ export class IslandEditComponent implements OnInit {
           title: this.islandForm.get('title')!.value,
           short_info: this.islandForm.get('short_info')!.value,
           description: this.islandForm.get('description')!.value,
-          photo: this.islandForm.get('photo')!.value ?? null,
+          photo: this.islandForm.get('photo')!.value,
         })
         .subscribe({
           next: () => {
