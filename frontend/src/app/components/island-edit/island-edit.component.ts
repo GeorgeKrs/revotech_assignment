@@ -27,6 +27,7 @@ export class IslandEditComponent implements OnInit {
   loading: boolean = true;
   updatingIsland: boolean = false;
   photoPreview!: string;
+  readerResult!: any;
 
   constructor(
     private router: Router,
@@ -89,7 +90,8 @@ export class IslandEditComponent implements OnInit {
       const reader = new FileReader();
       reader.readAsDataURL(files[0]);
       reader.onloadend = () => {
-        this.islandForm.get('photo')!.setValue(reader.result);
+        this.readerResult = reader.result;
+        this.islandForm.get('photo')!.setValue(files[0]);
       };
     }
   }
@@ -106,6 +108,8 @@ export class IslandEditComponent implements OnInit {
   submit(): void {
     if (this.islandForm.valid) {
       this.updatingIsland = true;
+
+      this.islandForm.get('photo')!.setValue(this.readerResult);
 
       this.islandsService
         .update(this.island.objectId, {
