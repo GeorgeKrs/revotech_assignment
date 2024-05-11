@@ -47,7 +47,7 @@ class Island {
       this.island.set("description", payload.description.trim());
     }
 
-    if (this.island.get("photo") !== payload.photo) {
+    if (this.island.get("photo") !== payload.photo && "photo" in payload) {
       await this.#handlePhotoUpdate(payload.photo, sessionToken);
     }
 
