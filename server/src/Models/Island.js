@@ -47,7 +47,7 @@ class Island {
       this.island.set("description", payload.description.trim());
     }
 
-    if (this.island.get("photo") !== payload.photo && "photo" in payload) {
+    if (payload.photo && this.island.get("photo") !== payload.photo) {
       await this.#handlePhotoUpdate(payload.photo, sessionToken);
     }
 
@@ -69,12 +69,11 @@ class Island {
      */
     const photoExtension = this.#getFileExtension(encodedPhoto);
 
-    const photo = new Parse.File(
-      this.island.get("title") + "." + photoExtension,
-      {
-        base64: encodedPhoto,
-      }
-    );
+    const photoFileName = this.#generateRandomName();
+
+    const photo = new Parse.File(`${photoFileName}.${photoExtension}`, {
+      base64: encodedPhoto,
+    });
 
     await photo.save(null, { sessionToken });
     this.island.set("photo", photo.url());
@@ -98,7 +97,7 @@ class Island {
     )}`;
 
     const thumbnail = new Parse.File(
-      this.island.get("title") + "_thumb." + photoExtension,
+      `${photoFileName}_thumb.${photoExtension}`,
       { base64: imageToBase64 }
     );
 
@@ -127,6 +126,10 @@ class Island {
     throw new Error(
       "Invalid or unsupported data format on Island.getFileExtension"
     );
+  }
+
+  #generateRandomName() {
+    Math.random().toString(36).substring(2, 10);
   }
 }
 

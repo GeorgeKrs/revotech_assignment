@@ -15,14 +15,14 @@ export const config = {
   masterKey: process.env.MASTER_KEY,
   serverURL: process.env.SERVER_URL,
   //TODO: Troubleshoot the parameter below
-  fileUpload: {
-    enableForPublic: true,
-  },
   // fileUpload: {
   //   enableForPublic: false,
   //   enableForAnonymousUser: false,
   //   enableForAuthenticatedUser: true,
   // },
+  fileUpload: {
+    enableForPublic: true,
+  },
 };
 
 export const app = express();
