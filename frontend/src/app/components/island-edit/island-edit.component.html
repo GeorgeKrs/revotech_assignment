@@ -132,15 +132,6 @@
                 >
                   Warning! Photo must not exceed 5MB.
                 </div>
-                <div
-                  *ngIf="
-                    !islandForm.get('photo')?.errors?.maxSize &&
-                    !photoHasChanged()
-                  "
-                  class="text-teal-700"
-                >
-                  *An image thumbnail will be created after updating the island.
-                </div>
               </div>
             </div>
           </div>

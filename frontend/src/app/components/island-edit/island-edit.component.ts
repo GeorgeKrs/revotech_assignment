@@ -86,7 +86,6 @@ export class IslandEditComponent implements OnInit {
     if (files && files.length > 0) {
       this.photoPreview = URL.createObjectURL(files[0]);
 
-      //Convert to base64 string
       const reader = new FileReader();
       reader.readAsDataURL(files[0]);
       reader.onloadend = () => {
@@ -109,6 +108,8 @@ export class IslandEditComponent implements OnInit {
     if (this.islandForm.valid) {
       this.updatingIsland = true;
 
+      this.islandForm.disable();
+
       this.islandForm.get('photo')!.setValue(this.readerResult);
 
       this.islandsService
@@ -120,6 +121,7 @@ export class IslandEditComponent implements OnInit {
         })
         .subscribe({
           next: () => {
+            this.islandForm.enable();
             this.updatingIsland = false;
             this.redirectToShow();
           },
