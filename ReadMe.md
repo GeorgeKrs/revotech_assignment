@@ -15,7 +15,7 @@ Please follow the instructions below to install & run locally.
 
 - Open a terminal in project's directory and run: <b>cd frontend/</b>
 - On the frontend directory install dependencies: <b>npm install</b>
-- Install globally Angular to run locally: <b>npm install -g @angular/cli</b> (Optional)
+- Install globally Angular to run locally: <b>npm install -g @angular/cli</b>
 - On the frontend directory run the client app: <b>ng serve</b>
 
 ### Server
