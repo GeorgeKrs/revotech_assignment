@@ -1,12 +1,14 @@
 # About
 
 This is the fullstack project for Revotech's assignment (MEAN Stack).
+The development was done in Ubuntu 22.04.4 LTS.
 
 Please follow the instructions below to install & run locally.
 
 ### Project Setup
 
 - git clone https://github.com/GeorgeKrs/revotech_assignment.git
+- Download .env file
 
 ### Client
 
@@ -16,6 +18,7 @@ Please follow the instructions below to install & run locally.
 
 ### Server
 
+- Place the .env in the server directory
 - Open another terminal in project's directory and run: <b>cd server/</b>
 - On the server directory install dependencies: <b>npm install</b>
 - On the server directory run parse server:
